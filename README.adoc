@@ -2,6 +2,7 @@
 Sebastian Davids
 
 image::https://travis-ci.org/sdavids/sdavids-commons-uuid.svg?branch=master[Build Status]
+image::https://api.bintray.com/packages/sdavids/sdavids/sdavids-commons-uuid/images/download.svg[link="https://bintray.com/sdavids/sdavids/sdavids-commons-uuid/_latestVersion"]
 
 == Building from Source
 
