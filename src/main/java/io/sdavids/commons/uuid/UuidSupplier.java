@@ -92,7 +92,7 @@ public abstract class UuidSupplier implements Supplier<UUID> {
    * <p>The first instance obtained by the {@code ServiceLoader} is used. Otherwise, a supplier
    * returning random UUIDs is used.
    *
-   * @return some UUID supplier, never null
+   * @return some UUID supplier; never null
    * @see #randomUuidSupplier()
    * @since 1.0
    */
