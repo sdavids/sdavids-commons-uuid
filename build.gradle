@@ -86,10 +86,10 @@ dependencies {
 
   testCompileOnly "biz.aQute.bnd:biz.aQute.bnd.annotation:${bndAnnotationVersion}"
 
-  testCompile "io.sdavids.commons.test:sdavids-commons-test:${commonsTestVersion}"
-  testCompile "org.jooq:jool:${joolVersion}"
-  testCompile "junit:junit:${junitVersion}"
-  testCompile "org.assertj:assertj-core:${assertjVersion}"
+  testImplementation "io.sdavids.commons.test:sdavids-commons-test:${commonsTestVersion}"
+  testImplementation "org.jooq:jool:${joolVersion}"
+  testImplementation "junit:junit:${junitVersion}"
+  testImplementation "org.assertj:assertj-core:${assertjVersion}"
 }
 
 sourceCompatibility = '1.8'
