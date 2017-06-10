@@ -53,6 +53,7 @@ ext {
 
   // https://bintray.com/bintray/jcenter
   errorproneVersion = '2.0.19'
+  guavaVersion = '22.0'
   jsr305Version = '3.0.2'
   joolVersion = '0.9.12'
   bndAnnotationVersion = '3.3.0'
@@ -82,6 +83,8 @@ apply plugin: 'idea'
 
 dependencies {
   errorprone "com.google.errorprone:error_prone_core:${errorproneVersion}"
+
+  implementation "com.google.guava:guava:${guavaVersion}"
 
   compileOnly "com.google.code.findbugs:jsr305:${jsr305Version}"
   compileOnly "biz.aQute.bnd:biz.aQute.bnd.annotation:${bndAnnotationVersion}"
