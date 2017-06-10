@@ -89,8 +89,8 @@ public abstract class UuidSupplier implements Supplier<UUID> {
   /**
    * Obtains the default instance of the UUID supplier.
    *
-   * <p>The first instance obtained by the {@code ServiceLoader} is used. Otherwise, a supplier
-   * returning random UUIDs is used.
+   * <p>The first instance of type {@code UuidSupplier} obtained by the {@code ServiceLoader} is
+   * used. Otherwise, a supplier returning random UUIDs is used.
    *
    * @return some UUID supplier; never null
    * @see #randomUuidSupplier()
@@ -103,7 +103,7 @@ public abstract class UuidSupplier implements Supplier<UUID> {
   /**
    * Returns a supplier returning random UUIDs.
    *
-   * @return the random UUID supplier
+   * @return a random UUID supplier
    * @since 1.0
    */
   public static Supplier<UUID> randomUuidSupplier() {
@@ -113,8 +113,8 @@ public abstract class UuidSupplier implements Supplier<UUID> {
   /**
    * Returns a supplier returning a fixed UUID.
    *
-   * @param uuid the UUID to be returned
-   * @return the fixed UUID
+   * @param uuid the UUID to be returned by the supplier; not null
+   * @return a fixed UUID supplier
    * @since 1.0
    */
   public static Supplier<UUID> fixedUuidSupplier(UUID uuid) {
