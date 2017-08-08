@@ -52,8 +52,8 @@ ext {
   rootPackageName = 'io.sdavids.commons.uuid'
 
   // https://bintray.com/bintray/jcenter
-  guavaVersion = '22.0'
   errorproneVersion = '2.0.21'
+  guavaVersion = '23.0'
   jsr305Version = '3.0.2'
   joolVersion = '0.9.12'
   bndAnnotationVersion = '3.3.0'
