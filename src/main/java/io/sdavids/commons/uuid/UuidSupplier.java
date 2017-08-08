@@ -23,6 +23,7 @@ import aQute.bnd.annotation.headers.ProvideCapability;
 import aQute.bnd.annotation.headers.RequireCapability;
 import java.io.Serializable;
 import java.util.Iterator;
+import java.util.Queue;
 import java.util.UUID;
 import java.util.function.Supplier;
 
@@ -75,6 +76,30 @@ public abstract class UuidSupplier implements Supplier<UUID> {
     }
   }
 
+  private static final class QueueBaseUuidSupplier implements Supplier<UUID>, Serializable {
+
+    private static final long serialVersionUID = -5396596456485687697L;
+
+    private final Queue<UUID> uuidQueue;
+    private final UUID emptyQueueValue;
+
+    QueueBaseUuidSupplier(Queue<UUID> uuidQueue, UUID emptyQueueValue) {
+      this.uuidQueue = requireNonNull(uuidQueue, "uuidQueue");
+      this.emptyQueueValue = requireNonNull(emptyQueueValue, "emptyQueueValue");
+    }
+
+    @Override
+    public String toString() {
+      return "QueueBaseUuidSupplier.queueBasedUuidSupplier()";
+    }
+
+    @Override
+    public UUID get() {
+      UUID uuid = uuidQueue.poll();
+      return uuid == null ? emptyQueueValue : uuid;
+    }
+  }
+
   private static final class SingletonHolder {
 
     private static Supplier<UUID> initialize() {
@@ -119,6 +144,19 @@ public abstract class UuidSupplier implements Supplier<UUID> {
    */
   public static Supplier<UUID> fixedUuidSupplier(UUID uuid) {
     return new FixedUuidSupplier(uuid);
+  }
+
+  /**
+   * Returns a supplier returning UUIDs from a queue.
+   *
+   * @param uuidQueue the queue containing UUIDs to be returned by the supplier; not null
+   * @param emptyQueueValue the UUID to be returned by the supplier when {@code uuidQueue} is empty;
+   *     not null
+   * @return a queue-based UUID supplier
+   * @since 1.1
+   */
+  public static Supplier<UUID> queueBasedUuidSupplier(Queue<UUID> uuidQueue, UUID emptyQueueValue) {
+    return new QueueBaseUuidSupplier(uuidQueue, emptyQueueValue);
   }
 
   protected UuidSupplier() {
