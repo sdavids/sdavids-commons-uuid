@@ -56,7 +56,7 @@ ext {
   guavaVersion = '23.0'
   jsr305Version = '3.0.2'
   joolVersion = '0.9.12'
-  bndAnnotationVersion = '3.3.0'
+  bndAnnotationVersion = '3.4.0'
   junitVersion = '4.12'
   assertjVersion = '3.8.0'
   commonsTestVersion = '1.0.0'
