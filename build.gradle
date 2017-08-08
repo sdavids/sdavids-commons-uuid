@@ -84,7 +84,9 @@ apply plugin: 'idea'
 dependencies {
   errorprone "com.google.errorprone:error_prone_core:${errorproneVersion}"
 
-  implementation "com.google.guava:guava:${guavaVersion}"
+  implementation("com.google.guava:guava:${guavaVersion}") {
+    exclude group: 'com.google.code.findbugs', module: 'jsr305'
+  }
 
   compileOnly "com.google.code.findbugs:jsr305:${jsr305Version}"
   compileOnly "biz.aQute.bnd:biz.aQute.bnd.annotation:${bndAnnotationVersion}"
