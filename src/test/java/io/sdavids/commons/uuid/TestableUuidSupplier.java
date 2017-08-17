@@ -32,4 +32,9 @@ public final class TestableUuidSupplier extends UuidSupplier {
   public UUID get() {
     return FIXED_UUID;
   }
+
+  @Override
+  public String toString() {
+    return "TestableUuidSupplier";
+  }
 }
