@@ -140,11 +140,6 @@ buildConfig {
   buildConfigField 'java.time.OffsetDateTime', 'BUILD_TIME', "java.time.OffsetDateTime.parse(\"${nowIsoDateTime}\")"
 }
 
-test {
-  // injectable singleton needs a new VM for each test case
-  forkEvery 1
-}
-
 jar {
   manifest {
     attributes(
@@ -216,6 +211,17 @@ spotless {
   }
 }
 
+test {
+  systemProperty 'user.timezone', System.properties['user.timezone']
+
+  // injectable singleton needs a new VM for each test case
+  forkEvery 1
+
+  testLogging {
+    exceptionFormat = 'full'
+  }
+}
+
 idea {
   module {
     downloadJavadoc = true
@@ -235,10 +241,6 @@ task versionOnly {
   doLast {
     println version
   }
-}
-
-tasks.withType(Test) { task ->
-  task.testLogging.exceptionFormat = 'full'
 }
 
 if (project.hasProperty('release')) {
