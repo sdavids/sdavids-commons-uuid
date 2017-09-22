@@ -71,7 +71,7 @@ public final class UuidSupplierTest {
     expectedException.expect(NullPointerException.class);
     expectedException.expectMessage("uuid");
 
-    //noinspection ConstantConditions
+    // noinspection ConstantConditions
     fixedUuidSupplier(null);
   }
 
