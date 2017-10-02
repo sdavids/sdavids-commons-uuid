@@ -59,7 +59,6 @@ ext {
   guavaVersion = '23.0'
   jsr305Version = '3.0.2'
   joolVersion = '0.9.12'
-  bndAnnotationVersion = '3.4.0'
   junitVersion = '4.12'
   assertjVersion = '3.8.0'
   assertjGuavaVersion = '3.1.0'
@@ -100,9 +99,6 @@ dependencies {
   }
 
   compileOnly("com.google.code.findbugs:jsr305:${jsr305Version}")
-  compileOnly("biz.aQute.bnd:biz.aQute.bnd.annotation:${bndAnnotationVersion}")
-
-  testCompileOnly("biz.aQute.bnd:biz.aQute.bnd.annotation:${bndAnnotationVersion}")
 
   testImplementation("io.sdavids.commons.test:sdavids-commons-test:${commonsTestVersion}")
   testImplementation("org.jooq:jool:${joolVersion}")
@@ -180,7 +176,9 @@ bundle {
       'Bundle-Vendor'        : project.vendor,
       'Bundle-ContactAddress': 'sdavids@gmx.de',
       'Import-Package'       : 'javax.annotation;resolution:=optional,*',
-      'Export-Package'       : "${group}.*;-split-package:=merge-first"
+      'Export-Package'       : "${group}.*;-split-package:=merge-first",
+      'Provide-Capability'   : 'osgi.serviceloader;osgi.serviceloader=UuidSupplier',
+      'Require-Capability'   : 'osgi.extender;filter:="(osgi.extender=osgi.serviceloader.registrar)",osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.8))"'
   ]
 }
 

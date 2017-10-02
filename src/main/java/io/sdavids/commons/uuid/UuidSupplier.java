@@ -19,8 +19,6 @@ import static java.util.Objects.requireNonNull;
 import static java.util.ServiceLoader.load;
 import static java.util.UUID.randomUUID;
 
-import aQute.bnd.annotation.headers.ProvideCapability;
-import aQute.bnd.annotation.headers.RequireCapability;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Queue;
@@ -37,8 +35,6 @@ import java.util.function.Supplier;
  * @see <a href="http://wiki.apidesign.org/wiki/Injectable_Singleton">Injectable Singleton</a>
  * @since 1.0
  */
-@RequireCapability(ns = "osgi.extender", filter = "(osgi.extender=osgi.serviceloader.registrar)")
-@ProvideCapability(ns = "osgi.serviceloader", value = "osgi.serviceloader=UuidSupplier")
 public abstract class UuidSupplier implements Supplier<UUID> {
 
   private enum RandomUuidSupplier implements Supplier<UUID> {
