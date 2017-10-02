@@ -21,12 +21,12 @@ import java.util.UUID;
 
 public final class TestableUuidSupplier extends UuidSupplier {
 
-  public static final UUID FIXED_UUID = fromString("3f0f2ddb-b2e9-4757-9348-80ed6057abb3");
+  static final UUID FIXED_UUID = fromString("3f0f2ddb-b2e9-4757-9348-80ed6057abb3");
 
-  public static final UUID UUID_1 = fromString("1f0f2ddb-b2e9-4757-9348-80ed6057abb1");
-  public static final UUID UUID_2 = fromString("1f0f2ddb-b2e9-4757-9348-80ed6057abb2");
-  public static final UUID UUID_3 = fromString("1f0f2ddb-b2e9-4757-9348-80ed6057abb3");
-  public static final UUID UUID_4 = fromString("1f0f2ddb-b2e9-4757-9348-80ed6057abb4");
+  static final UUID UUID_1 = fromString("1f0f2ddb-b2e9-4757-9348-80ed6057abb1");
+  static final UUID UUID_2 = fromString("1f0f2ddb-b2e9-4757-9348-80ed6057abb2");
+  static final UUID UUID_3 = fromString("1f0f2ddb-b2e9-4757-9348-80ed6057abb3");
+  static final UUID UUID_4 = fromString("1f0f2ddb-b2e9-4757-9348-80ed6057abb4");
 
   @Override
   public UUID get() {
