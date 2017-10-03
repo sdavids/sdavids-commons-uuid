@@ -72,21 +72,21 @@ public abstract class UuidSupplier implements Supplier<UUID> {
     }
   }
 
-  private static final class QueueBaseUuidSupplier implements Supplier<UUID>, Serializable {
+  private static final class QueueBasedUuidSupplier implements Supplier<UUID>, Serializable {
 
     private static final long serialVersionUID = -5396596456485687697L;
 
     private final Queue<UUID> uuidQueue;
     private final UUID emptyQueueValue;
 
-    QueueBaseUuidSupplier(Queue<UUID> uuidQueue, UUID emptyQueueValue) {
+    QueueBasedUuidSupplier(Queue<UUID> uuidQueue, UUID emptyQueueValue) {
       this.uuidQueue = requireNonNull(uuidQueue, "uuidQueue");
       this.emptyQueueValue = requireNonNull(emptyQueueValue, "emptyQueueValue");
     }
 
     @Override
     public String toString() {
-      return "QueueBaseUuidSupplier.queueBasedUuidSupplier()";
+      return "QueueBasedUuidSupplier.queueBasedUuidSupplier()";
     }
 
     @Override
@@ -152,7 +152,7 @@ public abstract class UuidSupplier implements Supplier<UUID> {
    * @since 1.1
    */
   public static Supplier<UUID> queueBasedUuidSupplier(Queue<UUID> uuidQueue, UUID emptyQueueValue) {
-    return new QueueBaseUuidSupplier(uuidQueue, emptyQueueValue);
+    return new QueueBasedUuidSupplier(uuidQueue, emptyQueueValue);
   }
 
   protected UuidSupplier() {
