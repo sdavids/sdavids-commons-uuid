@@ -63,8 +63,6 @@ repositories {
   jcenter()
 }
 
-apply plugin: 'idea'
-
 dependencies {
   errorprone "com.google.errorprone:error_prone_core:${errorproneVersion}"
   errorproneJavac "com.google.errorprone:javac:${errorproneJavacVersion}"
@@ -181,13 +179,6 @@ test {
 
   testLogging {
     exceptionFormat = 'full'
-  }
-}
-
-idea {
-  module {
-    downloadJavadoc = true
-    downloadSources = true
   }
 }
 
