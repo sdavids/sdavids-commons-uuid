@@ -120,6 +120,12 @@ tasks.named('jar').configure {
         'Automatic-Module-Name': project.rootPackageName
     )
   }
+  from("${project.rootDir}") {
+    include 'NOTICE'
+    include 'LICENSE'
+    into 'META-INF'
+  }
+  exclude('rebel.xml')
 }
 
 tasks.withType(CheckForbiddenApis).configureEach {
