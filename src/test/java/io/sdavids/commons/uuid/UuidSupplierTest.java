@@ -35,8 +35,8 @@ import static org.assertj.guava.api.Assertions.assertThat;
 import static org.jooq.lambda.Unchecked.function;
 
 import com.google.common.collect.Multiset;
+import java.util.ArrayDeque;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
@@ -114,7 +114,7 @@ public final class UuidSupplierTest {
 
   @Test
   public void queueBasedUuidSupplier_queue_empty_one_single_thread() {
-    Queue<UUID> queue = new LinkedList<>();
+    Queue<UUID> queue = new ArrayDeque<>();
 
     Supplier<UUID> supplier = queueBasedUuidSupplier(queue, FIXED_UUID);
 
@@ -124,7 +124,7 @@ public final class UuidSupplierTest {
 
   @Test
   public void queueBasedUuidSupplier_queue_one_single_thread() {
-    Queue<UUID> queue = new LinkedList<>();
+    Queue<UUID> queue = new ArrayDeque<>();
 
     queue.offer(UUID_1);
 
@@ -137,7 +137,7 @@ public final class UuidSupplierTest {
 
   @Test
   public void queueBasedUuidSupplier_queue_many_single_thread() {
-    Queue<UUID> queue = new LinkedList<>();
+    Queue<UUID> queue = new ArrayDeque<>();
 
     Supplier<UUID> supplier = queueBasedUuidSupplier(queue, FIXED_UUID);
 
@@ -162,7 +162,7 @@ public final class UuidSupplierTest {
 
   @Test
   public void queueBasedUuidSupplier_queue_empty_multi_threaded() throws InterruptedException {
-    Queue<UUID> queue = new LinkedList<>();
+    Queue<UUID> queue = new ArrayDeque<>();
 
     Supplier<UUID> supplier = queueBasedUuidSupplier(queue, FIXED_UUID);
 
