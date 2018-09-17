@@ -173,6 +173,8 @@ spotless {
 
 test {
   systemProperty 'user.timezone', System.properties['user.timezone']
+  systemProperty 'user.language', System.properties['user.language']
+  systemProperty 'user.country', System.properties['user.country']
 
   // injectable singleton needs a new VM for each test case
   forkEvery 1
