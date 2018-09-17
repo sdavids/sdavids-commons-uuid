@@ -37,7 +37,6 @@ ext {
   errorproneVersion = '2.3.1'
   errorproneJavacVersion = '9+181-r4173-1'
   guavaVersion = '23.0'
-  jsr305Version = '3.0.2'
   joolVersion = '0.9.12'
   junitVersion = '4.12'
   assertjVersion = '3.11.1'
@@ -68,8 +67,6 @@ dependencies {
     exclude group: 'com.google.j2objc', module: 'j2objc-annotations'
     exclude group: 'org.codehaus.mojo', module: 'animal-sniffer-annotations'
   }
-
-  compileOnly("com.google.code.findbugs:jsr305:${jsr305Version}")
 
   testImplementation("io.sdavids.commons.test:sdavids-commons-test:${commonsTestVersion}")
   testImplementation("org.jooq:jool:${joolVersion}")
