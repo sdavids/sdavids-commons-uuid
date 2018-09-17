@@ -56,7 +56,6 @@ group 'io.sdavids.commons'
 version = '2.1.0'
 
 repositories {
-  mavenLocal()
   jcenter()
 }
 
