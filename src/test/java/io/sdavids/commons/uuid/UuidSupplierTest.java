@@ -51,16 +51,17 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-/**
- * <strong>Important</strong>: This test has to run in a new VM.
- *
- * <h3 id="Gradle">Gradle</h3>
- *
- * <pre>
- * <code>test {
- *  forkEvery 1
- * }</code></pre>
- */
+// Important: This test has to run in a forked VM.
+//
+// IntelliJ:
+//
+//   Forkmode - class
+//
+// Gradle:
+//
+//   test {
+//     forkEvery 1
+//   }
 public final class UuidSupplierTest {
 
   private static final long COUNT = 1000L;
@@ -82,7 +83,6 @@ public final class UuidSupplierTest {
     expectedException.expect(NullPointerException.class);
     expectedException.expectMessage("uuid");
 
-    // noinspection ConstantConditions
     fixedUuidSupplier(null);
   }
 

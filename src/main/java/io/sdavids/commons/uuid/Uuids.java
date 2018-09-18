@@ -63,7 +63,7 @@ public final class Uuids {
    * @throws IllegalArgumentException if str does not conform to the standard string representation
    * @since 1.1
    */
-  @SuppressWarnings({"MagicCharacter", "MagicNumber", "StringConcatenationMissingWhitespace"})
+  @SuppressWarnings({"MagicCharacter", "MagicNumber"})
   public static UUID fromStandardRepresentationString(String str) {
     requireNonNull(str, "str");
     checkArgument(str.length() == UUID_STANDARD_LENGTH, "Invalid UUID string: %s", str);
@@ -120,7 +120,7 @@ public final class Uuids {
    * @throws IllegalArgumentException if str does not conform to the shortened string representation
    * @since 1.1
    */
-  @SuppressWarnings({"MagicCharacter", "MagicNumber", "StringConcatenationMissingWhitespace"})
+  @SuppressWarnings({"MagicNumber", "StringConcatenationMissingWhitespace"})
   public static UUID fromShortenedRepresentationString(String str) {
     requireNonNull(str, "str");
     checkArgument(str.length() == UUID_SHORTENED_LENGTH, "Invalid UUID string: %s", str);

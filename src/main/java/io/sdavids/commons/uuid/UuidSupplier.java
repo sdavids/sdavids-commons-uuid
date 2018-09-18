@@ -35,6 +35,7 @@ import java.util.function.Supplier;
  * @see <a href="http://wiki.apidesign.org/wiki/Injectable_Singleton">Injectable Singleton</a>
  * @since 1.0
  */
+@SuppressWarnings("CyclicClassDependency")
 public abstract class UuidSupplier implements Supplier<UUID> {
 
   private enum RandomUuidSupplier implements Supplier<UUID> {
@@ -96,6 +97,7 @@ public abstract class UuidSupplier implements Supplier<UUID> {
     }
   }
 
+  @SuppressWarnings("CyclicClassDependency")
   private static final class SingletonHolder {
 
     private static Supplier<UUID> initialize() {
