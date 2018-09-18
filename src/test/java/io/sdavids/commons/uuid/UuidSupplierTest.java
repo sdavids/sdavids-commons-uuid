@@ -15,7 +15,6 @@
  */
 package io.sdavids.commons.uuid;
 
-import static com.google.common.collect.ImmutableMultiset.toImmutableMultiset;
 import static io.sdavids.commons.uuid.TestableUuidSupplier.FIXED_UUID;
 import static io.sdavids.commons.uuid.TestableUuidSupplier.UUID_1;
 import static io.sdavids.commons.uuid.TestableUuidSupplier.UUID_2;
@@ -27,16 +26,18 @@ import static io.sdavids.commons.uuid.UuidSupplier.randomUuidSupplier;
 import static java.util.ServiceLoader.load;
 import static java.util.concurrent.Executors.newFixedThreadPool;
 import static java.util.concurrent.TimeUnit.MINUTES;
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.counting;
+import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 import static java.util.stream.Stream.generate;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.guava.api.Assertions.assertThat;
 
-import com.google.common.collect.Multiset;
 import java.util.ArrayDeque;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import java.util.UUID;
@@ -208,11 +209,12 @@ public final class UuidSupplierTest {
     service.shutdown();
     service.awaitTermination(1L, MINUTES);
 
-    Multiset<UUID> uuids = result.stream().map(getFuture()).collect(toImmutableMultiset());
+    Map<UUID, Long> uuids =
+        result.stream().map(getFuture()).collect(groupingBy(identity(), counting()));
 
-    assertThat(uuids.elementSet()).hasSize(2);
-    assertThat(uuids).contains((int) COUNT - 1, FIXED_UUID);
-    assertThat(uuids).contains(1, UUID_1);
+    assertThat(uuids).hasSize(2);
+    assertThat(uuids.get(FIXED_UUID)).isEqualTo(COUNT - 1L);
+    assertThat(uuids.get(UUID_1)).isEqualTo(1L);
   }
 
   @Test
@@ -234,13 +236,14 @@ public final class UuidSupplierTest {
     service.shutdown();
     service.awaitTermination(1L, MINUTES);
 
-    Multiset<UUID> uuids = result.stream().map(getFuture()).collect(toImmutableMultiset());
+    Map<UUID, Long> uuids =
+        result.stream().map(getFuture()).collect(groupingBy(identity(), counting()));
 
-    assertThat(uuids.elementSet()).hasSize(4);
-    assertThat(uuids).contains((int) COUNT - 3, FIXED_UUID);
-    assertThat(uuids).contains(1, UUID_1);
-    assertThat(uuids).contains(1, UUID_2);
-    assertThat(uuids).contains(1, UUID_3);
+    assertThat(uuids).hasSize(4);
+    assertThat(uuids.get(FIXED_UUID)).isEqualTo(COUNT - 3L);
+    assertThat(uuids.get(UUID_1)).isEqualTo(1L);
+    assertThat(uuids.get(UUID_2)).isEqualTo(1L);
+    assertThat(uuids.get(UUID_3)).isEqualTo(1L);
   }
 
   @Test

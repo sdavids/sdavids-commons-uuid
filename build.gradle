@@ -87,9 +87,6 @@ dependencies {
   testImplementation("io.sdavids.commons.test:sdavids-commons-test:${commonsTestVersion}")
   testImplementation("junit:junit:${junitVersion}")
   testImplementation("org.assertj:assertj-core:${assertjVersion}")
-  testImplementation("org.assertj:assertj-guava:${assertjGuavaVersion}") {
-    exclude group: 'com.google.guava', module: 'guava'
-  }
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8
