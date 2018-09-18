@@ -15,13 +15,13 @@
  */
 package io.sdavids.commons.uuid;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static java.util.regex.Pattern.CASE_INSENSITIVE;
 
-import com.google.common.base.CharMatcher;
 import java.util.Locale;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 /**
  * Miscellaneous UUID utility methods.
@@ -66,14 +66,9 @@ public final class Uuids {
   @SuppressWarnings({"MagicCharacter", "MagicNumber"})
   public static UUID fromStandardRepresentationString(String str) {
     requireNonNull(str, "str");
-    checkArgument(str.length() == UUID_STANDARD_LENGTH, "Invalid UUID string: %s", str);
-    checkArgument(str.charAt(8) == '-', "Invalid UUID string: %s", str);
-    checkArgument(str.charAt(13) == '-', "Invalid UUID string: %s", str);
-    checkArgument(str.charAt(18) == '-', "Invalid UUID string: %s", str);
-    checkArgument(str.charAt(23) == '-', "Invalid UUID string: %s", str);
-    checkArgument(
-        DASH_MATCHER.countIn(str) == UUID_STANDARD_DASH_COUNT, "Invalid UUID string: %s", str);
-    checkArgument(UUID_STANDARD_MATCHER.matchesAllOf(str), "Invalid UUID string: %s", str);
+    if (!(str.length() == UUID_STANDARD_LENGTH && UUID_STANDARD_PATTERN.matcher(str).matches())) {
+      throw new IllegalArgumentException("Invalid UUID string: " + str);
+    }
 
     long mostSigBits = Long.decode("0x" + str.substring(0, 8));
     mostSigBits <<= 16L;
@@ -123,8 +118,9 @@ public final class Uuids {
   @SuppressWarnings({"MagicNumber", "StringConcatenationMissingWhitespace"})
   public static UUID fromShortenedRepresentationString(String str) {
     requireNonNull(str, "str");
-    checkArgument(str.length() == UUID_SHORTENED_LENGTH, "Invalid UUID string: %s", str);
-    checkArgument(UUID_SHORTENED_MATCHER.matchesAllOf(str), "Invalid UUID string: %s", str);
+    if (!(str.length() == UUID_SHORTENED_LENGTH && SHORTENED_UUID_PATTERN.matcher(str).matches())) {
+      throw new IllegalArgumentException("Invalid UUID string: " + str);
+    }
 
     long mostSigBits = Long.decode("0x" + str.substring(0, 8));
     mostSigBits <<= 16L;
@@ -213,15 +209,14 @@ public final class Uuids {
         Locale.ROOT, "%016x%016x", uuid.getMostSignificantBits(), uuid.getLeastSignificantBits());
   }
 
-  private static final int UUID_STANDARD_DASH_COUNT = 4;
   private static final int UUID_STANDARD_LENGTH = 36;
-  private static final int UUID_SHORTENED_LENGTH = UUID_STANDARD_LENGTH - UUID_STANDARD_DASH_COUNT;
+  private static final Pattern UUID_STANDARD_PATTERN =
+      Pattern.compile(
+          "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", CASE_INSENSITIVE);
 
-  private static final CharMatcher UUID_STANDARD_MATCHER =
-      CharMatcher.anyOf("-0123456789ABCDEFabcdef");
-  private static final CharMatcher UUID_SHORTENED_MATCHER =
-      CharMatcher.anyOf("0123456789ABCDEFabcdef");
-  private static final CharMatcher DASH_MATCHER = CharMatcher.is('-');
+  private static final int UUID_SHORTENED_LENGTH = 32;
+  private static final Pattern SHORTENED_UUID_PATTERN =
+      Pattern.compile("^[0-9a-f]{32}$", CASE_INSENSITIVE);
 
   private Uuids() {
     // prevent instantiation
