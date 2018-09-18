@@ -16,6 +16,7 @@
 
 rootProject.name = 'sdavids-commons-uuid'
 
-if (file('../sdavids-commons-test').exists()) {
-  includeBuild '../sdavids-commons-test'
+def sdavidsCommonsTest = '../sdavids-commons-test'
+if (file(sdavidsCommonsTest).exists()) {
+  includeBuild(sdavidsCommonsTest)
 }
