@@ -22,6 +22,7 @@ import net.ltgt.gradle.errorprone.CheckSeverity
 
 // https://plugins.gradle.org/
 plugins {
+  id 'com.gradle.build-scan' version '1.16'
   id 'java-library'
   id 'checkstyle'
   id 'pmd'
@@ -244,6 +245,11 @@ test {
   testLogging {
     exceptionFormat = 'full'
   }
+}
+
+buildScan {
+  termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+  termsOfServiceAgree = 'yes'
 }
 
 wrapper {
