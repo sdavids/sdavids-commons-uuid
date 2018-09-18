@@ -52,6 +52,11 @@ public final class UuidsFromStandardRepresentationStringTest {
           {"ABCDEFABCDEFABCDEFABCDEFABCDEFAB----", null, IllegalArgumentException.class},
           {"abcdefABCDEF01234567890123456789----", null, IllegalArgumentException.class},
           {"85a8b17f-8ca5-4061-aeb6-2f8a1a3bb60h", null, IllegalArgumentException.class},
+          {"f424e90b17f0f-4e71-99ed-e8c8e7be58e2", null, IllegalArgumentException.class},
+          {"f424e90b-7f0f24e71-99ed-e8c8e7be58e2", null, IllegalArgumentException.class},
+          {"f424e90b-7f0f-4e71399ed-e8c8e7be58e2", null, IllegalArgumentException.class},
+          {"f424e90b-7f0f-4e71-99ed4e8c8e7be58e2", null, IllegalArgumentException.class},
+          {"f424e90b-7f0f-4e71-99ed-e8c8-7be58e2", null, IllegalArgumentException.class},
           {
             "85a8b17f-8ca5-4061-aeb6-2f8a1a3bb60b",
             UUID.fromString("85a8b17f-8ca5-4061-aeb6-2f8a1a3bb60b"),
