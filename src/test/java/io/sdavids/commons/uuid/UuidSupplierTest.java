@@ -32,7 +32,6 @@ import static java.util.stream.Collectors.toSet;
 import static java.util.stream.Stream.generate;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.guava.api.Assertions.assertThat;
-import static org.jooq.lambda.Unchecked.function;
 
 import com.google.common.collect.Multiset;
 import java.util.ArrayDeque;
@@ -43,8 +42,10 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import org.junit.Rule;
 import org.junit.Test;
@@ -63,6 +64,16 @@ import org.junit.rules.ExpectedException;
 public final class UuidSupplierTest {
 
   private static final long COUNT = 1000L;
+
+  private static Function<Future<UUID>, UUID> getFuture() {
+    return f -> {
+      try {
+        return f.get();
+      } catch (InterruptedException | ExecutionException e) {
+        throw new IllegalStateException(e);
+      }
+    };
+  }
 
   @Rule public ExpectedException expectedException = ExpectedException.none();
 
@@ -88,7 +99,7 @@ public final class UuidSupplierTest {
     service.shutdown();
     service.awaitTermination(1L, MINUTES);
 
-    Set<UUID> uuids = result.stream().map(function(Future::get)).collect(toSet());
+    Set<UUID> uuids = result.stream().map(getFuture()).collect(toSet());
 
     assertThat(uuids).containsExactly(FIXED_UUID);
   }
@@ -106,7 +117,7 @@ public final class UuidSupplierTest {
     service.shutdown();
     service.awaitTermination(1L, MINUTES);
 
-    Set<UUID> uuids = result.stream().map(function(Future::get)).collect(toSet());
+    Set<UUID> uuids = result.stream().map(getFuture()).collect(toSet());
 
     assertThat(uuids).hasSize((int) COUNT);
     assertThat(uuids).doesNotContainNull();
@@ -175,7 +186,7 @@ public final class UuidSupplierTest {
     service.shutdown();
     service.awaitTermination(1L, MINUTES);
 
-    Set<UUID> uuids = result.stream().map(function(Future::get)).collect(toSet());
+    Set<UUID> uuids = result.stream().map(getFuture()).collect(toSet());
 
     assertThat(uuids).containsExactly(FIXED_UUID);
   }
@@ -197,8 +208,7 @@ public final class UuidSupplierTest {
     service.shutdown();
     service.awaitTermination(1L, MINUTES);
 
-    Multiset<UUID> uuids =
-        result.stream().map(function(Future::get)).collect(toImmutableMultiset());
+    Multiset<UUID> uuids = result.stream().map(getFuture()).collect(toImmutableMultiset());
 
     assertThat(uuids.elementSet()).hasSize(2);
     assertThat(uuids).contains((int) COUNT - 1, FIXED_UUID);
@@ -224,8 +234,7 @@ public final class UuidSupplierTest {
     service.shutdown();
     service.awaitTermination(1L, MINUTES);
 
-    Multiset<UUID> uuids =
-        result.stream().map(function(Future::get)).collect(toImmutableMultiset());
+    Multiset<UUID> uuids = result.stream().map(getFuture()).collect(toImmutableMultiset());
 
     assertThat(uuids.elementSet()).hasSize(4);
     assertThat(uuids).contains((int) COUNT - 3, FIXED_UUID);
