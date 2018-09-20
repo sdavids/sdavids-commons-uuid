@@ -23,8 +23,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Iterator;
 import java.util.UUID;
 import java.util.function.Supplier;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 // Important: This test has to run in a forked VM.
 //
@@ -37,15 +38,20 @@ import org.junit.Test;
 //   test {
 //     forkEvery 1
 //   }
-public final class UuidSupplierWithServiceTest {
+final class UuidSupplierWithServiceTest {
 
-  @BeforeClass
-  public static void setUp() {
+  @BeforeEach
+  void setUp() {
     setServices(TestableUuidSupplier.class);
   }
 
+  @AfterEach
+  void tearDown() {
+    setServices();
+  }
+
   @Test
-  public void getDefault_() {
+  void getDefault_() {
     Iterator<UuidSupplier> providers = load(UuidSupplier.class).iterator();
 
     assertThat(providers.hasNext()).isTrue();
@@ -70,7 +76,7 @@ public final class UuidSupplierWithServiceTest {
   }
 
   @Test
-  public void getDefault_get() {
+  void getDefault_get() {
     Supplier<UUID> supplier = UuidSupplier.getDefault();
 
     assertThat(supplier.get()).isEqualTo(FIXED_UUID);

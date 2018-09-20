@@ -33,6 +33,7 @@ import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 import static java.util.stream.Stream.generate;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.ArrayDeque;
 import java.util.Iterator;
@@ -48,9 +49,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 
 // Important: This test has to run in a forked VM.
 //
@@ -63,7 +62,7 @@ import org.junit.rules.ExpectedException;
 //   test {
 //     forkEvery 1
 //   }
-public final class UuidSupplierTest {
+final class UuidSupplierTest {
 
   private static final long COUNT = 1000L;
 
@@ -77,18 +76,13 @@ public final class UuidSupplierTest {
     };
   }
 
-  @Rule public ExpectedException expectedException = ExpectedException.none();
-
   @Test
-  public void fixedUuidSupplier_null() {
-    expectedException.expect(NullPointerException.class);
-    expectedException.expectMessage("uuid");
-
-    fixedUuidSupplier(null);
+  void fixedUuidSupplier_null() {
+    assertThrows(NullPointerException.class, () -> fixedUuidSupplier(null), "uuid");
   }
 
   @Test
-  public void fixedUuidSupplier_() throws InterruptedException {
+  void fixedUuidSupplier_() throws InterruptedException {
     Supplier<UUID> supplier = fixedUuidSupplier(FIXED_UUID);
 
     ExecutorService service = newFixedThreadPool(5);
@@ -106,7 +100,7 @@ public final class UuidSupplierTest {
   }
 
   @Test
-  public void randomUuidSupplier_() throws InterruptedException {
+  void randomUuidSupplier_() throws InterruptedException {
     Supplier<UUID> supplier = randomUuidSupplier();
 
     ExecutorService service = newFixedThreadPool(5);
@@ -125,7 +119,7 @@ public final class UuidSupplierTest {
   }
 
   @Test
-  public void queueBasedUuidSupplier_queue_empty_one_single_thread() {
+  void queueBasedUuidSupplier_queue_empty_one_single_thread() {
     Queue<UUID> queue = new ArrayDeque<>();
 
     Supplier<UUID> supplier = queueBasedUuidSupplier(queue, FIXED_UUID);
@@ -135,7 +129,7 @@ public final class UuidSupplierTest {
   }
 
   @Test
-  public void queueBasedUuidSupplier_queue_one_single_thread() {
+  void queueBasedUuidSupplier_queue_one_single_thread() {
     Queue<UUID> queue = new ArrayDeque<>();
 
     queue.offer(UUID_1);
@@ -148,7 +142,7 @@ public final class UuidSupplierTest {
   }
 
   @Test
-  public void queueBasedUuidSupplier_queue_many_single_thread() {
+  void queueBasedUuidSupplier_queue_many_single_thread() {
     Queue<UUID> queue = new ArrayDeque<>();
 
     Supplier<UUID> supplier = queueBasedUuidSupplier(queue, FIXED_UUID);
@@ -173,7 +167,7 @@ public final class UuidSupplierTest {
   }
 
   @Test
-  public void queueBasedUuidSupplier_queue_empty_multi_threaded() throws InterruptedException {
+  void queueBasedUuidSupplier_queue_empty_multi_threaded() throws InterruptedException {
     Queue<UUID> queue = new ArrayDeque<>();
 
     Supplier<UUID> supplier = queueBasedUuidSupplier(queue, FIXED_UUID);
@@ -193,7 +187,7 @@ public final class UuidSupplierTest {
   }
 
   @Test
-  public void queueBasedUuidSupplier_queue_one_multi_threaded() throws InterruptedException {
+  void queueBasedUuidSupplier_queue_one_multi_threaded() throws InterruptedException {
     Queue<UUID> queue = new ConcurrentLinkedQueue<>();
 
     queue.offer(UUID_1);
@@ -218,7 +212,7 @@ public final class UuidSupplierTest {
   }
 
   @Test
-  public void queueBasedUuidSupplier_queue_many_multi_threaded() throws InterruptedException {
+  void queueBasedUuidSupplier_queue_many_multi_threaded() throws InterruptedException {
     Queue<UUID> queue = new ConcurrentLinkedQueue<>();
 
     queue.offer(UUID_1);
@@ -247,7 +241,7 @@ public final class UuidSupplierTest {
   }
 
   @Test
-  public void getDefault_default_impl() {
+  void getDefault_default_impl() {
     Iterator<UuidSupplier> providers = load(UuidSupplier.class).iterator();
 
     assertThat(providers.hasNext()).isFalse();
@@ -264,7 +258,7 @@ public final class UuidSupplierTest {
   }
 
   @Test
-  public void getDefault_get() {
+  void getDefault_get() {
     assertThat(UuidSupplier.getDefault().get()).isNotNull();
   }
 }

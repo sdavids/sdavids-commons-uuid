@@ -15,74 +15,49 @@
  */
 package io.sdavids.commons.uuid;
 
-import static io.sdavids.commons.uuid.Uuids.fromStandardRepresentationString;
-import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.util.Collection;
-import java.util.Objects;
 import java.util.UUID;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameter;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
-@RunWith(Parameterized.class)
-public final class UuidsFromStandardRepresentationStringTest {
+final class UuidsFromStandardRepresentationStringTest {
 
-  @Parameters(name = "{index}: fromStandardRepresentationString({0})={1}")
-  public static Collection<Object[]> data() {
-    return asList(
-        new Object[][] {
-          {null, null, NullPointerException.class},
-          {"", null, IllegalArgumentException.class},
-          {"01234567890123456789012345678901234", null, IllegalArgumentException.class},
-          {"0123456789012345678901234567890123456", null, IllegalArgumentException.class},
-          {"012345678901234567890123456789012345", null, IllegalArgumentException.class},
-          {"012345678901234567890123456789012---", null, IllegalArgumentException.class},
-          {"0123456789012345678901234567890-----", null, IllegalArgumentException.class},
-          {"0123456789012345678901234567890----", null, IllegalArgumentException.class},
-          {"012345678901234567890123456789012----", null, IllegalArgumentException.class},
-          {"abcdefABCDEF0123456789012345678h----", null, IllegalArgumentException.class},
-          {"01234567890123456789012345678901----", null, IllegalArgumentException.class},
-          {"abcdefabcdefabcdefabcdefabcdefab----", null, IllegalArgumentException.class},
-          {"ABCDEFABCDEFABCDEFABCDEFABCDEFAB----", null, IllegalArgumentException.class},
-          {"abcdefABCDEF01234567890123456789----", null, IllegalArgumentException.class},
-          {"85a8b17f-8ca5-4061-aeb6-2f8a1a3bb60h", null, IllegalArgumentException.class},
-          {"f424e90b17f0f-4e71-99ed-e8c8e7be58e2", null, IllegalArgumentException.class},
-          {"f424e90b-7f0f24e71-99ed-e8c8e7be58e2", null, IllegalArgumentException.class},
-          {"f424e90b-7f0f-4e71399ed-e8c8e7be58e2", null, IllegalArgumentException.class},
-          {"f424e90b-7f0f-4e71-99ed4e8c8e7be58e2", null, IllegalArgumentException.class},
-          {"f424e90b-7f0f-4e71-99ed-e8c8-7be58e2", null, IllegalArgumentException.class},
-          {
-            "85a8b17f-8ca5-4061-aeb6-2f8a1a3bb60b",
-            UUID.fromString("85a8b17f-8ca5-4061-aeb6-2f8a1a3bb60b"),
-            null
-          },
-        });
-  }
+  @ParameterizedTest
+  @CsvSource({
+    ",,java.lang.NullPointerException",
+    "'',,java.lang.IllegalArgumentException",
+    "01234567890123456789012345678901234,,java.lang.IllegalArgumentException",
+    "0123456789012345678901234567890123456,,java.lang.IllegalArgumentException",
+    "012345678901234567890123456789012345,,java.lang.IllegalArgumentException",
+    "012345678901234567890123456789012---,,java.lang.IllegalArgumentException",
+    "0123456789012345678901234567890-----,,java.lang.IllegalArgumentException",
+    "0123456789012345678901234567890----,,java.lang.IllegalArgumentException",
+    "012345678901234567890123456789012----,,java.lang.IllegalArgumentException",
+    "abcdefABCDEF0123456789012345678h----,,java.lang.IllegalArgumentException",
+    "01234567890123456789012345678901----,,java.lang.IllegalArgumentException",
+    "abcdefabcdefabcdefabcdefabcdefab----,,java.lang.IllegalArgumentException",
+    "ABCDEFABCDEFABCDEFABCDEFABCDEFAB----,,java.lang.IllegalArgumentException",
+    "abcdefABCDEF01234567890123456789----,,java.lang.IllegalArgumentException",
+    "85a8b17f-8ca5-4061-aeb6-2f8a1a3bb60h,,java.lang.IllegalArgumentException",
+    "f424e90b17f0f-4e71-99ed-e8c8e7be58e2,,java.lang.IllegalArgumentException",
+    "f424e90b-7f0f24e71-99ed-e8c8e7be58e2,,java.lang.IllegalArgumentException",
+    "f424e90b-7f0f-4e71399ed-e8c8e7be58e2,,java.lang.IllegalArgumentException",
+    "f424e90b-7f0f-4e71-99ed4e8c8e7be58e2,,java.lang.IllegalArgumentException",
+    "f424e90b-7f0f-4e71-99ed-e8c8-7be58e2,,java.lang.IllegalArgumentException",
+    "85a8b17f-8ca5-4061-aeb6-2f8a1a3bb60b,85a8b17f-8ca5-4061-aeb6-2f8a1a3bb60b,"
+  })
+  void fromStandardRepresentationString(
+      String input, UUID expected, Class<? extends Exception> exception) {
 
-  @Parameter public String input;
-
-  @Parameter(1)
-  public UUID expected;
-
-  @Parameter(2)
-  public Class<? extends Exception> exception;
-
-  @Rule public ExpectedException thrown = ExpectedException.none();
-
-  @Test
-  public void test() {
-    if (exception != null) {
-      thrown.expect(exception);
-      if (Objects.equals(exception, IllegalArgumentException.class)) {
-        thrown.expectMessage("Invalid UUID string: " + input);
-      }
+    if (exception == null) {
+      assertThat(Uuids.fromStandardRepresentationString(input)).isEqualTo(expected);
+    } else {
+      assertThrows(
+          exception,
+          () -> assertThat(Uuids.fromStandardRepresentationString(input)).isEqualTo(expected),
+          "Invalid UUID string: " + input);
     }
-    assertThat(fromStandardRepresentationString(input)).isEqualTo(expected);
   }
 }

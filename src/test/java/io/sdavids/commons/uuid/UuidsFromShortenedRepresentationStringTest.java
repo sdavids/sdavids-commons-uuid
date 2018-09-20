@@ -15,80 +15,39 @@
  */
 package io.sdavids.commons.uuid;
 
-import static io.sdavids.commons.uuid.Uuids.fromShortenedRepresentationString;
-import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.util.Collection;
-import java.util.Objects;
 import java.util.UUID;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameter;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
-@RunWith(Parameterized.class)
-public final class UuidsFromShortenedRepresentationStringTest {
+final class UuidsFromShortenedRepresentationStringTest {
 
-  @Parameters(name = "{index}: fromStandardRepresentationString({0})={1}")
-  public static Collection<Object[]> data() {
-    return asList(
-        new Object[][] {
-          {null, null, NullPointerException.class},
-          {"", null, IllegalArgumentException.class},
-          {"0123456789012345678901234567890", null, IllegalArgumentException.class},
-          {"012345678901234567890123456789012", null, IllegalArgumentException.class},
-          {"abcdefABCDEF0123456789012345678h", null, IllegalArgumentException.class},
-          {"abcdefABCDEF0123456789012345678-", null, IllegalArgumentException.class},
-          {
-            "01234567890123456789012345678901",
-            UUID.fromString("01234567-8901-2345-6789-012345678901"),
-            null
-          },
-          {
-            "abcdefabcdefabcdefabcdefabcdefab",
-            UUID.fromString("abcdefab-cdef-abcd-efab-cdefabcdefab"),
-            null
-          },
-          {
-            "ABCDEFABCDEFABCDEFABCDEFABCDEFAB",
-            UUID.fromString("ABCDEFAB-CDEF-ABCD-EFAB-CDEFABCDEFAB"),
-            null
-          },
-          {
-            "abcdefABCDEF01234567890123456789",
-            UUID.fromString("abcdefAB-CDEF-0123-4567-890123456789"),
-            null
-          },
-          {
-            "85a8b17f8ca54061aeb62f8a1a3bb60b",
-            UUID.fromString("85a8b17f-8ca5-4061-aeb6-2f8a1a3bb60b"),
-            null
-          },
-        });
-  }
+  @ParameterizedTest
+  @CsvSource({
+    ",,java.lang.NullPointerException",
+    "'',,java.lang.IllegalArgumentException",
+    "0123456789012345678901234567890,,java.lang.IllegalArgumentException",
+    "012345678901234567890123456789012,,java.lang.IllegalArgumentException",
+    "abcdefABCDEF0123456789012345678h,, java.lang.IllegalArgumentException",
+    "abcdefABCDEF0123456789012345678-,,java.lang.IllegalArgumentException",
+    "01234567890123456789012345678901,01234567-8901-2345-6789-012345678901,",
+    "abcdefabcdefabcdefabcdefabcdefab,abcdefab-cdef-abcd-efab-cdefabcdefab,",
+    "ABCDEFABCDEFABCDEFABCDEFABCDEFAB,ABCDEFAB-CDEF-ABCD-EFAB-CDEFABCDEFAB,",
+    "abcdefABCDEF01234567890123456789,abcdefAB-CDEF-0123-4567-890123456789,",
+    "85a8b17f8ca54061aeb62f8a1a3bb60b,85a8b17f-8ca5-4061-aeb6-2f8a1a3bb60b,"
+  })
+  void fromShortenedRepresentationString(
+      String input, UUID expected, Class<? extends Exception> exception) {
 
-  @Parameter public String input;
-
-  @Parameter(1)
-  public UUID expected;
-
-  @Parameter(2)
-  public Class<? extends Exception> exception;
-
-  @Rule public ExpectedException thrown = ExpectedException.none();
-
-  @Test
-  public void test() {
-    if (exception != null) {
-      thrown.expect(exception);
-      if (Objects.equals(exception, IllegalArgumentException.class)) {
-        thrown.expectMessage("Invalid UUID string: " + input);
-      }
+    if (exception == null) {
+      assertThat(Uuids.fromShortenedRepresentationString(input)).isEqualTo(expected);
+    } else {
+      assertThrows(
+          exception,
+          () -> assertThat(Uuids.fromShortenedRepresentationString(input)).isEqualTo(expected),
+          "Invalid UUID string: " + input);
     }
-    assertThat(fromShortenedRepresentationString(input)).isEqualTo(expected);
   }
 }

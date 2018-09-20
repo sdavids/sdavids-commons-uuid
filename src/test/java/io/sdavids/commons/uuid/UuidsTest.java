@@ -25,9 +25,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.UUID;
 import java.util.regex.Pattern;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public final class UuidsTest {
+final class UuidsTest {
 
   private static final int RUNS = 1000;
 
@@ -35,7 +35,7 @@ public final class UuidsTest {
   private static final UUID KNOWN_UUID = UUID.fromString("001c01d0-0c90-01A0-05e0-053a2fcb09b0");
 
   @Test
-  public void fromStandardRepresentationString_() {
+  void fromStandardRepresentationString_() {
     UUID uuid = KNOWN_UUID;
     String str = uuid.toString();
     assertThat(fromStandardRepresentationString(str))
@@ -44,7 +44,7 @@ public final class UuidsTest {
   }
 
   @Test
-  public void fromShortenedRepresentationString_() {
+  void fromShortenedRepresentationString_() {
     UUID uuid = KNOWN_UUID;
     String str = DASH_PATTERN.matcher(uuid.toString()).replaceAll("");
     assertThat(fromShortenedRepresentationString(str))
@@ -53,7 +53,7 @@ public final class UuidsTest {
   }
 
   @Test
-  public void fromStandardRepresentationString_random() {
+  void fromStandardRepresentationString_random() {
     for (int i = RUNS; i >= 0; i--) {
       UUID uuid = randomUUID();
       String str = uuid.toString();
@@ -64,7 +64,7 @@ public final class UuidsTest {
   }
 
   @Test
-  public void fromShortenedRepresentationString_random() {
+  void fromShortenedRepresentationString_random() {
     for (int i = RUNS; i >= 0; i--) {
       UUID uuid = randomUUID();
       String str = DASH_PATTERN.matcher(uuid.toString()).replaceAll("");
@@ -75,7 +75,7 @@ public final class UuidsTest {
   }
 
   @Test
-  public void toStandardRepresentationString_() {
+  void toStandardRepresentationString_() {
     UUID uuid = KNOWN_UUID;
     String str = uuid.toString();
     assertThat(toStandardRepresentationString(uuid))
@@ -84,7 +84,7 @@ public final class UuidsTest {
   }
 
   @Test
-  public void toShortenedRepresentationString_() {
+  void toShortenedRepresentationString_() {
     UUID uuid = KNOWN_UUID;
     String str = DASH_PATTERN.matcher(uuid.toString()).replaceAll("");
     assertThat(toShortenedRepresentationString(uuid))
@@ -93,7 +93,7 @@ public final class UuidsTest {
   }
 
   @Test
-  public void toStandardRepresentationString_random() {
+  void toStandardRepresentationString_random() {
     for (int i = RUNS; i >= 0; i--) {
       UUID uuid = randomUUID();
       String str = uuid.toString();
@@ -104,7 +104,7 @@ public final class UuidsTest {
   }
 
   @Test
-  public void toShortenedRepresentationString_random() {
+  void toShortenedRepresentationString_random() {
     for (int i = RUNS; i >= 0; i--) {
       UUID uuid = randomUUID();
       String str = DASH_PATTERN.matcher(uuid.toString()).replaceAll("");
