@@ -51,17 +51,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import org.junit.jupiter.api.Test;
 
-// Important: This test has to run in a forked VM.
-//
-// IntelliJ:
-//
-//   Forkmode - class
-//
-// Gradle:
-//
-//   test {
-//     forkEvery 1
-//   }
 final class UuidSupplierTest {
 
   private static final long COUNT = 1000L;

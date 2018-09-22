@@ -27,17 +27,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-// Important: This test has to run in a forked VM.
-//
-// IntelliJ:
-//
-//   Forkmode - class
-//
-// Gradle:
-//
-//   test {
-//     forkEvery 1
-//   }
 final class UuidSupplierWithServiceTest {
 
   @BeforeEach
