@@ -25,7 +25,7 @@ import static io.sdavids.commons.uuid.UuidSupplier.queueBasedUuidSupplier;
 import static io.sdavids.commons.uuid.UuidSupplier.randomUuidSupplier;
 import static java.util.ServiceLoader.load;
 import static java.util.concurrent.Executors.newFixedThreadPool;
-import static java.util.concurrent.TimeUnit.MINUTES;
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
@@ -74,14 +74,13 @@ final class UuidSupplierTest {
   void fixedUuidSupplier_() throws InterruptedException {
     Supplier<UUID> supplier = fixedUuidSupplier(FIXED_UUID);
 
-    ExecutorService service = newFixedThreadPool(5);
+    ExecutorService executorService = newFixedThreadPool(5);
 
     List<Future<UUID>> result =
-        service.invokeAll(
+        executorService.invokeAll(
             generate(() -> (Callable<UUID>) supplier::get).limit(COUNT).collect(toList()));
 
-    service.shutdown();
-    service.awaitTermination(1L, MINUTES);
+    shutdownExecutorService(executorService);
 
     Set<UUID> uuids = result.stream().map(getFuture()).collect(toSet());
 
@@ -92,14 +91,13 @@ final class UuidSupplierTest {
   void randomUuidSupplier_() throws InterruptedException {
     Supplier<UUID> supplier = randomUuidSupplier();
 
-    ExecutorService service = newFixedThreadPool(5);
+    ExecutorService executorService = newFixedThreadPool(5);
 
     List<Future<UUID>> result =
-        service.invokeAll(
+        executorService.invokeAll(
             generate(() -> (Callable<UUID>) supplier::get).limit(COUNT).collect(toList()));
 
-    service.shutdown();
-    service.awaitTermination(1L, MINUTES);
+    shutdownExecutorService(executorService);
 
     Set<UUID> uuids = result.stream().map(getFuture()).collect(toSet());
 
@@ -161,14 +159,13 @@ final class UuidSupplierTest {
 
     Supplier<UUID> supplier = queueBasedUuidSupplier(queue, FIXED_UUID);
 
-    ExecutorService service = newFixedThreadPool(5);
+    ExecutorService executorService = newFixedThreadPool(5);
 
     List<Future<UUID>> result =
-        service.invokeAll(
+        executorService.invokeAll(
             generate(() -> (Callable<UUID>) supplier::get).limit(COUNT).collect(toList()));
 
-    service.shutdown();
-    service.awaitTermination(1L, MINUTES);
+    shutdownExecutorService(executorService);
 
     Set<UUID> uuids = result.stream().map(getFuture()).collect(toSet());
 
@@ -183,14 +180,13 @@ final class UuidSupplierTest {
 
     Supplier<UUID> supplier = queueBasedUuidSupplier(queue, FIXED_UUID);
 
-    ExecutorService service = newFixedThreadPool(5);
+    ExecutorService executorService = newFixedThreadPool(5);
 
     List<Future<UUID>> result =
-        service.invokeAll(
+        executorService.invokeAll(
             generate(() -> (Callable<UUID>) supplier::get).limit(COUNT).collect(toList()));
 
-    service.shutdown();
-    service.awaitTermination(1L, MINUTES);
+    shutdownExecutorService(executorService);
 
     Map<UUID, Long> uuids =
         result.stream().map(getFuture()).collect(groupingBy(identity(), counting()));
@@ -210,14 +206,13 @@ final class UuidSupplierTest {
 
     Supplier<UUID> supplier = queueBasedUuidSupplier(queue, FIXED_UUID);
 
-    ExecutorService service = newFixedThreadPool(5);
+    ExecutorService executorService = newFixedThreadPool(5);
 
     List<Future<UUID>> result =
-        service.invokeAll(
+        executorService.invokeAll(
             generate(() -> (Callable<UUID>) supplier::get).limit(COUNT).collect(toList()));
 
-    service.shutdown();
-    service.awaitTermination(1L, MINUTES);
+    shutdownExecutorService(executorService);
 
     Map<UUID, Long> uuids =
         result.stream().map(getFuture()).collect(groupingBy(identity(), counting()));
@@ -249,5 +244,16 @@ final class UuidSupplierTest {
   @Test
   void getDefault_get() {
     assertThat(UuidSupplier.getDefault().get()).isNotNull();
+  }
+
+  private static void shutdownExecutorService(ExecutorService executorService) {
+    executorService.shutdown();
+    try {
+      if (!executorService.awaitTermination(30L, SECONDS)) {
+        executorService.shutdownNow();
+      }
+    } catch (InterruptedException e) {
+      executorService.shutdownNow();
+    }
   }
 }
