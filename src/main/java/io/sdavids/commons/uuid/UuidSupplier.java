@@ -18,12 +18,14 @@ package io.sdavids.commons.uuid;
 import static java.util.Objects.requireNonNull;
 import static java.util.ServiceLoader.load;
 import static java.util.UUID.randomUUID;
+import static org.apiguardian.api.API.Status.STABLE;
 
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Queue;
 import java.util.UUID;
 import java.util.function.Supplier;
+import org.apiguardian.api.API;
 
 /**
  * Suppliers for UUIDs.
@@ -35,6 +37,7 @@ import java.util.function.Supplier;
  * @see <a href="http://wiki.apidesign.org/wiki/Injectable_Singleton">Injectable Singleton</a>
  * @since 1.0
  */
+@API(status = STABLE, since = "1.0")
 public abstract class UuidSupplier implements Supplier<UUID> {
 
   private enum RandomUuidSupplier implements Supplier<UUID> {
@@ -151,6 +154,7 @@ public abstract class UuidSupplier implements Supplier<UUID> {
    * @return a queue-based UUID supplier
    * @since 1.1
    */
+  @API(status = STABLE, since = "1.1")
   public static Supplier<UUID> queueBasedUuidSupplier(Queue<UUID> uuidQueue, UUID emptyQueueValue) {
     return new QueueBasedUuidSupplier(uuidQueue, emptyQueueValue);
   }

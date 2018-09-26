@@ -18,10 +18,12 @@ package io.sdavids.commons.uuid;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static java.util.regex.Pattern.CASE_INSENSITIVE;
+import static org.apiguardian.api.API.Status.STABLE;
 
 import java.util.Locale;
 import java.util.UUID;
 import java.util.regex.Pattern;
+import org.apiguardian.api.API;
 
 /**
  * Miscellaneous UUID utility methods.
@@ -29,6 +31,7 @@ import java.util.regex.Pattern;
  * @see UUID
  * @since 1.1
  */
+@API(status = STABLE, since = "1.1")
 public final class Uuids {
 
   /**
