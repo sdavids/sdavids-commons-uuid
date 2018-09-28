@@ -18,6 +18,9 @@ Thumbs.db
 .classpath
 .project
 
+### VS Code ###
+/.vscode
+
 ### JRebel ###
 rebel.xml
 
